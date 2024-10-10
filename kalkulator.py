@@ -1,5 +1,6 @@
 import math
 
+# Operations
 def add(x, y):
     return x + y
 
@@ -25,57 +26,108 @@ def logarithm(x, base):
         return "Error! Logarithm undefined."
 
 def sine(x):
-    return math.sin(math.radians(x))
+    return math.sin(x)
 
 def cosine(x):
-    return math.cos(math.radians(x))
+    return math.cos(x)
 
 def tangent(x):
-    return math.tan(math.radians(x))
+    return math.tan(x)
 
-def calculator():
-    print("Pilih operasi:")
-    print("1. Tambah")
-    print("2. Kurang")
-    print("3. Kali")
-    print("4. Bagi")
-    print("5. Pangkat")
-    print("6. Logaritma")
-    print("7. Sinus")
-    print("8. Cosinus")
-    print("9. Tangen")
+# Additional Feature: History tracking
+history = []
 
-    choice = input("Masukkan pilihan (1-9): ")
-
-    if choice in ['1', '2', '3', '4', '5']:
-        num1 = float(input("Masukkan angka pertama: "))
-        num2 = float(input("Masukkan angka kedua: "))
-
-        if choice == '1':
-            print(f"Hasil: {add(num1, num2)}")
-        elif choice == '2':
-            print(f"Hasil: {subtract(num1, num2)}")
-        elif choice == '3':
-            print(f"Hasil: {multiply(num1, num2)}")
-        elif choice == '4':
-            print(f"Hasil: {divide(num1, num2)}")
-        elif choice == '5':
-            print(f"Hasil: {power(num1, num2)}")
-
-    elif choice in ['6', '7', '8', '9']:
-        num = float(input("Masukkan angka: "))
-        
-        if choice == '6':
-            base = float(input("Masukkan basis logaritma: "))
-            print(f"Hasil: {logarithm(num, base)}")
-        elif choice == '7':
-            print(f"Hasil: {sine(num)}")
-        elif choice == '8':
-            print(f"Hasil: {cosine(num)}")
-        elif choice == '9':
-            print(f"Hasil: {tangent(num)}")
+def show_history():
+    if history:
+        print("Calculation History:")
+        for entry in history:
+            print(entry)
     else:
-        print("Pilihan tidak valid.")
+        print("No calculations performed yet.")
+
+# Additional Feature: Trigonometric conversion option
+def convert_angle(angle, unit):
+    if unit == 'r':
+        return angle  # Radians
+    elif unit == 'd':
+        return math.radians(angle)  # Convert degrees to radians
+    else:
+        return None
+
+# Main calculator function
+def calculator():
+    while True:
+        print("\nPilih operasi:")
+        print("1. Tambah")
+        print("2. Kurang")
+        print("3. Kali")
+        print("4. Bagi")
+        print("5. Pangkat")
+        print("6. Logaritma")
+        print("7. Sinus")
+        print("8. Cosinus")
+        print("9. Tangen")
+        print("10. Riwayat Perhitungan")
+        print("0. Keluar")
+
+        choice = input("Masukkan pilihan (0-10): ")
+
+        if choice == '0':
+            print("Terima kasih! Keluar dari kalkulator.")
+            break
+        elif choice in ['1', '2', '3', '4', '5']:
+            num1 = float(input("Masukkan angka pertama: "))
+            num2 = float(input("Masukkan angka kedua: "))
+
+            if choice == '1':
+                result = add(num1, num2)
+            elif choice == '2':
+                result = subtract(num1, num2)
+            elif choice == '3':
+                result = multiply(num1, num2)
+            elif choice == '4':
+                result = divide(num1, num2)
+            elif choice == '5':
+                result = power(num1, num2)
+
+            history.append(f"{num1} {choice} {num2} = {result}")
+            print(f"Hasil: {result}")
+
+        elif choice in ['6', '7', '8', '9']:
+            num = float(input("Masukkan angka: "))
+
+            if choice == '6':
+                base = float(input("Masukkan basis logaritma: "))
+                result = logarithm(num, base)
+            elif choice == '7':
+                unit = input("Masukkan 'd' untuk derajat atau 'r' untuk radian: ")
+                angle = convert_angle(num, unit)
+                if angle is not None:
+                    result = sine(angle)
+                else:
+                    result = "Error! Satuan sudut tidak valid."
+            elif choice == '8':
+                unit = input("Masukkan 'd' untuk derajat atau 'r' untuk radian: ")
+                angle = convert_angle(num, unit)
+                if angle is not None:
+                    result = cosine(angle)
+                else:
+                    result = "Error! Satuan sudut tidak valid."
+            elif choice == '9':
+                unit = input("Masukkan 'd' untuk derajat atau 'r' untuk radian: ")
+                angle = convert_angle(num, unit)
+                if angle is not None:
+                    result = tangent(angle)
+                else:
+                    result = "Error! Satuan sudut tidak valid."
+
+            history.append(f"{choice} {num} = {result}")
+            print(f"Hasil: {result}")
+
+        elif choice == '10':
+            show_history()
+        else:
+            print("Pilihan tidak valid.")
 
 if __name__ == "__main__":
     calculator()
